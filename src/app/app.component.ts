@@ -1,7 +1,7 @@
-import { Component } from '@angular/core';
+import { Component, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { HeaderComponent } from './components/header.component';
-import { BubblaVWidgetComponent } from '@bubblav/ai-chatbot-angular';
+import { BubblaVWidgetComponent, BubblaVWidgetService } from '@bubblav/ai-chatbot-angular';
 import { environment } from '../environments/environment';
 
 @Component({
@@ -50,6 +50,12 @@ import { environment } from '../environments/environment';
                 <div class="w-px h-4 bg-primary-foreground/20 mx-1"></div>
                 Deploy to Vercel
               </a>
+              <button
+                (click)="openChat()"
+                class="inline-flex items-center justify-center rounded-md border border-border bg-background px-8 text-sm font-medium shadow-sm transition-all hover:bg-muted hover:opacity-90 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-foreground focus-visible:ring-offset-2 h-11"
+              >
+                Ask AI
+              </button>
             </div>
           </div>
         </div>
@@ -228,4 +234,9 @@ import { environment } from '../environments/environment';
 export class AppComponent {
   websiteId: string = environment.bubblavWebsiteId;
   currentYear = new Date().getFullYear();
+  private widgetService = inject(BubblaVWidgetService);
+
+  openChat(): void {
+    this.widgetService.open();
+  }
 }
