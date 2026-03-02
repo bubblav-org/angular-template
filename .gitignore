@@ -1,0 +1,32 @@
+# Angular dev/build outputs
+dist/
+.angular/
+
+# Node dependencies
+node_modules/
+
+# Logs
+logs
+*.log
+
+# IDE
+.idea/
+.vscode/
+*.swp
+*.swo
+*~
+
+# Misc
+.DS_Store
+.fleet
+
+# Local env files
+.env
+.env.*
+!.env.example
+
+# Testing
+coverage/
+
+# Build artifacts
+out-tsc/
