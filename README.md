@@ -50,13 +50,16 @@ Open [http://localhost:4200](http://localhost:4200) to see the result.
 
 1. Sign up at [bubblav.com](https://www.bubblav.com)
 2. Create a website and get your **Website ID** from the dashboard
-3. Set the environment variable (for local development, create `.env`):
+3. Create `.env.local` file in the project root:
 
 ```bash
 ANGULAR_PUBLIC_BUBBLAV_WEBSITE_ID=your-website-id-here
 ```
 
-For Vercel deployment, add this as an environment variable in your project settings.
+**How it works:**
+- The `set-env.cjs` script reads your `.env.local` file and generates the environment files at build time
+- Run `npm run dev` - the script runs automatically before the dev server
+- For Vercel deployment, set `ANGULAR_PUBLIC_BUBBLAV_WEBSITE_ID` in your project's Environment Variables
 
 ### How It Works
 

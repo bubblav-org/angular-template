@@ -1,13 +1,13 @@
-import { Component, Inject, PLATFORM_ID } from '@angular/core';
-import { CommonModule, isPlatformBrowser } from '@angular/common';
+import { Component } from '@angular/core';
+import { CommonModule } from '@angular/common';
 import { HeaderComponent } from './components/header.component';
-import { ThemeToggleComponent } from './components/theme-toggle.component';
 import { BubblaVWidgetComponent } from '@bubblav/ai-chatbot-angular';
+import { environment } from '../environments/environment';
 
 @Component({
   selector: 'app-root',
   standalone: true,
-  imports: [CommonModule, HeaderComponent, ThemeToggleComponent, BubblaVWidgetComponent],
+  imports: [CommonModule, HeaderComponent, BubblaVWidgetComponent],
   template: `
     <div class="min-h-screen bg-background">
       <app-header />
@@ -226,13 +226,6 @@ import { BubblaVWidgetComponent } from '@bubblav/ai-chatbot-angular';
   styles: []
 })
 export class AppComponent {
-  websiteId: string = '';
+  websiteId: string = environment.bubblavWebsiteId;
   currentYear = new Date().getFullYear();
-
-  constructor(@Inject(PLATFORM_ID) private platformId: Object) {
-    if (isPlatformBrowser(this.platformId)) {
-      // Read from window object (set by Vercel or other deployment platforms)
-      this.websiteId = (window as any).ANGULAR_PUBLIC_BUBBLAV_WEBSITE_ID || '';
-    }
-  }
 }

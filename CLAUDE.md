@@ -27,14 +27,29 @@ npm run test
 
 ## Environment Setup
 
-The following environment variable is required for the chatbot to work:
+The project uses a **Node.js script** (`set-env.cjs`) to populate environment files at build time:
 
 ```bash
-# .env (for local development)
+# .env.local (for local development)
 ANGULAR_PUBLIC_BUBBLAV_WEBSITE_ID=your-website-id-here
 ```
 
 Get your Website ID from the [BubblaV dashboard](https://www.bubblav.com/dashboard).
+
+**How it works:**
+1. `set-env.cjs` reads `ANGULAR_PUBLIC_BUBBLAV_WEBSITE_ID` from `.env.local` (or from Vercel env vars in production)
+2. The script generates both `src/environments/environment.ts` and `src/environments/environment.prod.ts` with the actual values
+3. Npm scripts run `set-env.cjs` before Angular commands (via `&&` chaining)
+
+**For Vercel deployment:**
+- Set `ANGULAR_PUBLIC_BUBBLAV_WEBSITE_ID` in Vercel Environment Variables
+- The script will read it from `process.env` during build
+
+**Important Security Notes:**
+- Generated environment files (`environment.ts`, `environment.prod.ts`) are gitignored
+- Template files (`environment*.template.ts`) are kept in repo as reference
+- Never commit actual environment values to git
+- `.env.local` is also gitignored (see `.git.example` for format)
 
 ## Tech Stack
 
@@ -73,6 +88,11 @@ src/
 │   │   ├── header.component.ts       # Main navigation with theme toggle and "Ask AI" button
 │   │   └── theme-toggle.component.ts # Dark/light mode switcher
 │   └── app.component.ts              # Root component with hero, features, and CTA sections
+├── environments/
+│   ├── environment.template.ts       # Template file (git tracked)
+│   ├── environment.prod.template.ts  # Production template (git tracked)
+│   ├── environment.ts                # Generated from .env.local (gitignored)
+│   └── environment.prod.ts           # Generated from .env.local (gitignored)
 ├── styles.css                        # CSS variables, global styles, and theme definitions
 ├── main.ts                           # Application bootstrap
 └── index.html                        # HTML entry point
@@ -85,6 +105,9 @@ angular.json                          # Angular CLI configuration
 tailwind.config.js                    # Tailwind CSS configuration with theme tokens
 tsconfig.json                         # TypeScript configuration
 package.json                          # Dependencies and scripts
+set-env.cjs                           # Environment file generator script
+.env.example                          # Example environment file format
+.env.local                            # Your local environment (gitignored)
 ```
 
 ### Component Architecture
@@ -99,7 +122,9 @@ The chatbot widget is integrated through the `@bubblav/ai-chatbot-angular` packa
 
 **In app.component.ts:**
 ```typescript
+import { Component } from '@angular/core';
 import { BubblaVWidgetComponent } from '@bubblav/ai-chatbot-angular';
+import { environment } from '../environments/environment';
 
 @Component({
   imports: [BubblaVWidgetComponent],
@@ -110,7 +135,7 @@ import { BubblaVWidgetComponent } from '@bubblav/ai-chatbot-angular';
   `
 })
 export class AppComponent {
-  websiteId = process.env['ANGULAR_PUBLIC_BUBBLAV_WEBSITE_ID'] || '';
+  websiteId: string = environment.bubblavWebsiteId;
 }
 ```
 
@@ -211,7 +236,8 @@ bootstrapApplication(AppComponent, {
 
 ## Troubleshooting
 
-- **Chatbot not appearing?** Check that `ANGULAR_PUBLIC_BUBBLAV_WEBSITE_ID` is set in environment variables
+- **Chatbot not appearing?** Check that `ANGULAR_PUBLIC_BUBBLAV_WEBSITE_ID` is set in `.env.local` file
+- **Env var not loading?** Run `node set-env.cjs` manually to see debug output, then check `src/environments/environment.ts` has correct value
 - **Theme toggle not working?** Ensure the `dark` class is being applied to the `<html>` element
 - **Components not showing?** Verify they're imported in the parent component's `imports` array (standalone components)
 - **Tailwind classes not applying?** Verify colors use `hsl(var(--token))` format in `tailwind.config.js`

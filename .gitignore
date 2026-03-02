@@ -30,3 +30,6 @@ coverage/
 
 # Build artifacts
 out-tsc/
+src/environments/environment.ts
+src/environments/environment.prod.ts
+!src/environments/environment*.template.ts
