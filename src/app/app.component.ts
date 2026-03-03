@@ -48,12 +48,16 @@ import { environment } from '../environments/environment';
                   <path d="M37.5274 0L75.0548 65H0L37.5274 0Z" />
                 </svg>
                 <div class="w-px h-4 bg-primary-foreground/20 mx-1"></div>
-                Deploy to Vercel
+                Deploy
               </a>
               <button
                 (click)="openChat()"
-                class="inline-flex items-center justify-center rounded-md border border-border bg-background px-8 text-sm font-medium shadow-sm transition-all hover:bg-muted hover:opacity-90 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-foreground focus-visible:ring-offset-2 h-11"
+                class="inline-flex items-center justify-center gap-2 whitespace-nowrap rounded-md border border-border bg-background px-8 text-sm font-medium shadow-sm transition-all hover:bg-muted hover:opacity-90 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-foreground focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:size-4 shrink-0 h-11"
               >
+                <svg class="h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z"></path>
+                </svg>
+                <div class="w-px h-4 bg-foreground/20 mx-1"></div>
                 Ask AI
               </button>
             </div>
