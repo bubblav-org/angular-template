@@ -22,6 +22,15 @@ A fast, beautiful Angular starter template showcasing the [BubblaV AI Chatbot](h
 
 ## Quick Start
 
+### Deploy to Cloudflare Workers
+
+```bash
+npm run build        # reads ANGULAR_PUBLIC_BUBBLAV_WEBSITE_ID from env, .env.local, or .env.production
+npx wrangler deploy  # serves dist/angular-template/browser as static assets
+```
+
+The app is configured via `wrangler.jsonc` as a pure static-assets Worker with single-page-application fallback.
+
 ### Deploy to Vercel
 
 Click the button above to deploy this template to Vercel in one click.
@@ -57,9 +66,9 @@ ANGULAR_PUBLIC_BUBBLAV_WEBSITE_ID=your-website-id-here
 ```
 
 **How it works:**
-- The `set-env.cjs` script reads your `.env.local` file and generates the environment files at build time
+- The `set-env.cjs` script reads `ANGULAR_PUBLIC_BUBBLAV_WEBSITE_ID` from the process env, `.env.local`, or `.env.production` and generates the environment files at build time
 - Run `npm run dev` - the script runs automatically before the dev server
-- For Vercel deployment, set `ANGULAR_PUBLIC_BUBBLAV_WEBSITE_ID` in your project's Environment Variables
+- For CI/Workers builds, set the env var or provide a `.env.production` file; for Vercel, set `ANGULAR_PUBLIC_BUBBLAV_WEBSITE_ID` in the project's Environment Variables
 
 ### How It Works
 
