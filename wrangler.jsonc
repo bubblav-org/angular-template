@@ -1,0 +1,15 @@
+/**
+ * Cloudflare Workers configuration for the Angular template.
+ * The Angular build produces pure static assets (dist/angular-template/browser);
+ * no Worker script is required. SPA fallback serves index.html for unknown paths.
+ */
+{
+  "$schema": "node_modules/wrangler/config-schema.json",
+  "name": "bubblav-angular-template",
+  "account_id": "97f75e1ac993d6d5307123ab44d0b40b",
+  "compatibility_date": "2026-10-03",
+  "assets": {
+    "directory": "./dist/angular-template/browser",
+    "not_found_handling": "single-page-application"
+  }
+}

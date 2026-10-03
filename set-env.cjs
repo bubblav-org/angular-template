@@ -3,18 +3,25 @@ const path = require('path');
 const successColor = '\x1b[32m%s\x1b[0m';
 const checkSign = '\u{2705}';
 
-// Read .env.local file (for local development)
+// Read env files (for local development and CI builds)
 const envLocalPath = path.join(__dirname, '.env.local');
 let websiteId = '';
 
-// Check if Vercel env var is set (production build on Vercel)
+// Check if env var is set (e.g. production build on Vercel/CI)
 if (process.env.ANGULAR_PUBLIC_BUBBLAV_WEBSITE_ID) {
   websiteId = process.env.ANGULAR_PUBLIC_BUBBLAV_WEBSITE_ID;
-} else if (fs.existsSync(envLocalPath)) {
-  const content = fs.readFileSync(envLocalPath, 'utf-8');
-  const match = content.match(/ANGULAR_PUBLIC_BUBBLAV_WEBSITE_ID=(.+)/);
-  if (match) {
-    websiteId = match[1].trim();
+} else {
+  // Fall back to .env.local (local dev), then .env.production (Cloudflare/CI build)
+  for (const envFile of ['.env.local', '.env.production']) {
+    const envPath = path.join(__dirname, envFile);
+    if (fs.existsSync(envPath)) {
+      const content = fs.readFileSync(envPath, 'utf-8');
+      const match = content.match(/ANGULAR_PUBLIC_BUBBLAV_WEBSITE_ID=(.+)/);
+      if (match) {
+        websiteId = match[1].trim().replace(/^["']|["']$/g, '');
+        break;
+      }
+    }
   }
 }
 
